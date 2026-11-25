@@ -38,11 +38,24 @@ response = requests.get(base_url, params=params)
 # st.markdown(f"URL : {response.url}")
 
 as_json = response.json()
-with st.container(border=True):
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown(f"#### Prediction : :red[{as_json["species"]}]")
-    with col2:
-        st.markdown(
-            f"#### Probability : :blue-badge[{as_json["probability"]*100:.2f} %]"
-        )
+# with st.container(border=True):
+confidence = as_json["probability"] * 100
+confidence_level = (
+    "high"
+    if confidence > 90
+    else ("good" if confidence > 80 else "a bit low" if confidence > 70 else "low")
+)
+confidence_block = (
+    st.success
+    if confidence > 90
+    else (st.info if confidence > 80 else st.warning if confidence > 70 else st.error)
+)
+# with st.success():
+prediction: str = as_json["species"]
+a_or_an = "an" if prediction[0].lower() in list("aeiouy") else "a"
+
+confidence_block(
+    f"Their confidence is **{confidence_level} : {confidence:.1f}%**",
+    icon="✅",
+    title=f"Experts think it's {a_or_an} :red[{prediction}]",
+)
