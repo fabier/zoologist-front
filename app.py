@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit import secrets
 import requests
 
 # """
@@ -43,7 +44,8 @@ option_sex = st.selectbox("Sex", ["Male", "Female"])
 # ## Finally, we can display the prediction to the user
 # """
 
-base_url = "http://127.0.0.1:8000/predict"
+hostname = secrets.get("API_URL")
+base_url = f"{hostname}/predict"
 params = {
     "island": option_island,
     "bill_length_mm": option_bill_length,
