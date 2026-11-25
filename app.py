@@ -44,7 +44,7 @@ option_sex = st.selectbox("Sex", ["Male", "Female"])
 # ## Finally, we can display the prediction to the user
 # """
 
-hostname = secrets.get("API_URL")
+hostname = secrets["API_URL"]
 base_url = f"{hostname}/predict"
 params = {
     "island": option_island,
